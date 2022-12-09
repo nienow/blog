@@ -8,14 +8,15 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
+    "jsxFactory": "h",
     "lib": [
       "dom",
       "es6"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noEmit": true,
+    "noEmit": false,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -24,7 +25,11 @@
     "strict": true,
     "target": "esnext",
     "incremental": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "react": ["./node_modules/preact/compat/"],
+      "react-dom": ["./node_modules/preact/compat/"]
+    }
   },
   "exclude": [],
   "include": [
