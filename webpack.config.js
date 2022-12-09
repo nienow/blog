@@ -30,10 +30,17 @@ module.exports = {
   // },
   module: {
     rules: [
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/,
+      // },
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
       },
     ]
   },
@@ -62,16 +69,12 @@ module.exports = {
         './BlogIndex': './src/bootstrap',
       },
       shared: {
-        ...deps,
-        preact: {
-          singleton: true,
-          eager: false,
-          requiredVersion: deps.preact
-        }
+        ...deps
       },
     }),
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
+      template: "./src/index.html",
     }),
   ],
 };

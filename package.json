@@ -8,13 +8,18 @@
     "blogs": "ts-node ./compile-blogs.ts"
   },
   "dependencies": {
-    "highlight.js": "^11.6.0",
-    "preact": "^10.3.2",
-    "styled-components": "^5.0.0"
+    "preact": "^10.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-react-jsx": "^7.19.0",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.10.4",
     "@preact/compat": "^17.1.2",
     "@types/node": "^17.0.0",
+    "babel-loader": "^8.2.2",
     "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.4.2",
@@ -28,7 +33,6 @@
   "resolutions": {
     "styled-components": "^5"
   },
-  "packageManager": "yarn@3.2.3",
   "browserslist": {
     "production": [
       ">0.2%",
