@@ -14,6 +14,9 @@ module.exports = {
     // filename: '[name].js'
     publicPath: "http://localhost:8081/",
   },
+  optimization: {
+    minimize: false
+  },
   // optimization: {
   //   minimize: true,
   //   splitChunks: {
@@ -69,7 +72,11 @@ module.exports = {
         './BlogIndex': './src/bootstrap',
       },
       shared: {
-        ...deps
+        ...deps,
+        preact: {
+          singleton: true,
+          requiredVersion: deps.preact
+        }
       },
     }),
     new HtmlWebpackPlugin({

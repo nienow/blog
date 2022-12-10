@@ -1,8 +1,8 @@
-import { h } from "preact";
+import {h} from "preact";
 
 const App = () => {
   return (
-    <div>Yo this is my blog</div>
+    <div>Blog</div>
   );
 }
 
