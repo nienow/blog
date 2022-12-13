@@ -1,5 +1,3 @@
-import('./bootstrap').then(({mount}) => {
-  mount(document.body);
-});
+import('bootstrap');
 
 export {};

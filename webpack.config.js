@@ -1,43 +1,26 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
+require('dotenv').config();
 const deps = require("./package.json").dependencies;
+const HOST = process.env.HOST;
+console.log('HOST: ' + HOST);
 
 module.exports = {
-  // entry: {
-  //   app: './src/index.tsx'
-  // },
-  target: 'web',
   output: {
-    // path: path.resolve(__dirname, 'dist'),
-    // filename: '[name].js'
-    publicPath: "http://localhost:8081/",
+    filename: "[name].[contenthash].js",
+    publicPath: HOST,
+    clean: true
+    // publicPath: "auto"
   },
   optimization: {
-    minimize: false
+    minimize: false,
+    // runtimeChunk: 'single'
   },
-  // optimization: {
-  //   minimize: true,
-  //   splitChunks: {
-  //     // always create vendor.js
-  //     cacheGroups: {
-  //       vendor: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         name: 'vendor',
-  //         chunks: 'initial',
-  //         enforce: true,
-  //       },
-  //     },
-  //   },
-  // },
   module: {
     rules: [
-      // {
-      //   test: /\.tsx?$/,
-      //   use: 'ts-loader',
-      //   exclude: /node_modules/,
-      // },
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -45,6 +28,25 @@ module.exports = {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.css$/i,
+        use: [
+          "css-loader",
+        ],
+      },
+      {
+        test: /\.scss$/i,
+        use: [
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader"
+        ],
+      },
+      {
+        test: /\.(jpg|png|gif|jpeg)$/,
+        loader: 'url-loader',
+      }
     ]
   },
   resolve: {
@@ -52,16 +54,15 @@ module.exports = {
       'node_modules',
       'src'
     ],
-    extensions: ['.tsx', '.ts', '.js'],
-    alias: {
-      "react": "preact/compat",
-      "react-dom": "preact/compat",
-      "react/jsx-runtime": "preact/jsx-runtime"
-    },
+    extensions: ['.tsx', '.ts', '.js']
   },
   devServer: {
     port: 8081,
-    hot: true
+    hot: true,
+    historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -73,15 +74,22 @@ module.exports = {
       },
       shared: {
         ...deps,
-        preact: {
+        react: {
           singleton: true,
-          requiredVersion: deps.preact
+          requiredVersion: deps.react
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: deps["react-dom"]
         }
       },
     }),
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
-      template: "./src/index.html",
+      template: "./src/index.html"
+    }),
+    new DefinePlugin({
+      'process.env.HOST': JSON.stringify(HOST),
     }),
   ],
 };
