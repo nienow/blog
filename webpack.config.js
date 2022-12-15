@@ -70,7 +70,7 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './BlogIndex': './src/bootstrap',
+        './BlogIndex': './src/bootstrap'
       },
       shared: {
         ...deps,

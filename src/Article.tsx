@@ -6,7 +6,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
 import 'highlight.js/styles/github.css';
 import styled from "styled-components";
-import {useRouter} from "Router";
+import {useRouter} from "router/Router";
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('xml', xml);

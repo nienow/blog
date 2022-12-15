@@ -1,6 +1,8 @@
 import React from "react";
-import Router from "Router";
-import RouterOutlet from "RouterOutlet";
+import Router from "router/Router";
+import RouterOutlet from "router/RouterOutlet";
+import Article from "Article";
+import ArticleList from "ArticleList";
 
 
 interface Params {
@@ -8,11 +10,16 @@ interface Params {
   style: string;
 }
 
+const ROUTES = [
+  {path: '/blog/article/:id', element: <Article/>},
+  {path: '/blog', element: <ArticleList/>}
+];
+
 const App = ({basename}: Params) => {
 
 
   return (
-    <Router basename={basename}>
+    <Router basename={basename} routes={ROUTES}>
       <RouterOutlet/>
     </Router>
   );

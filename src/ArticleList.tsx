@@ -2,7 +2,7 @@ import React from 'react';
 
 import blogs from 'generated/blog-list.json';
 import styled from "styled-components";
-import Link from "Link";
+import Link from "router/Link";
 
 const ArticleListContainer = styled.div`
   display: flex;

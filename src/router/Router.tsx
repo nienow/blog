@@ -1,16 +1,16 @@
-import React, {createContext, useContext, useEffect, useState} from "react";
-import ArticleList from "ArticleList";
-import Article from "Article";
-import {routeTest} from "route-test";
+import React, {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import {routeTest} from "router/route-test";
 
-// const RouteNotFound = () => <div>Route not found</div>;
+type IRoutes = {
+  path: string;
+  element: JSX.Element
+}[];
 
-
-const ROUTES = [
-  {path: '/blog/article/:id', element: () => <Article/>},
-  // {path: '/blog/.*', element: () => <Blog/>},
-  {path: '/blog', element: () => <ArticleList/>}
-];
+interface Params {
+  basename: string;
+  routes: IRoutes;
+  children: ReactNode;
+}
 
 interface IRouterContext {
   url: string;
@@ -24,7 +24,7 @@ const GLOBAL_ROUTE_CONTEXT = {
   url: location.pathname,
   params: {},
   current: null,
-  routes: ROUTES,
+  routes: [],
   navigate: null
 };
 
@@ -34,17 +34,14 @@ export const useRouter = () => {
   return useContext(RouterContext);
 };
 
-
-const Router = ({basename, children}) => {
-  // console.log(basename);
+const Router = ({basename, routes, children}: Params) => {
   const [url, setUrl] = useState(location.pathname);
   const [params, setParams] = useState({});
   const [current, setCurrent] = useState(null);
   const calcRoute = (newUrl) => {
     setUrl(newUrl);
-    setCurrent(ROUTES.find(child => {
-      // return new RegExp('^' + child.path + '$').test(url);
-      const result = routeTest(newUrl, child.path, {});
+    setCurrent(routes.find(child => {
+      const result = routeTest(newUrl, child.path);
       setParams(result);
       return !!result;
     }));
@@ -56,14 +53,6 @@ const Router = ({basename, children}) => {
     console.log('blog navigate: ' + fullUrl);
     calcRoute(fullUrl);
   };
-
-  // const current = cloneElement(children.find(child => child.props.path === url) || <div>No route found</div>);
-  // console.log(current);
-
-  // const onPopState = () => {
-  //   console.log('blog pop: ' + location.pathname);
-  //   calcRoute(location.pathname);
-  // };
 
   const onContainerNavigate = (event) => {
     const url = (event as any).detail;
@@ -85,7 +74,7 @@ const Router = ({basename, children}) => {
   }, []);
 
   return (
-    <RouterContext.Provider value={{url, params, current, routes: ROUTES, navigate}}>{children}</RouterContext.Provider>
+    <RouterContext.Provider value={{url, params, current, routes, navigate}}>{children}</RouterContext.Provider>
   );
 }
 
