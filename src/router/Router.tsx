@@ -41,17 +41,22 @@ const Router = ({basename, routes, children}: Params) => {
   const calcRoute = (newUrl) => {
     setUrl(newUrl);
     setCurrent(routes.find(child => {
-      const result = routeTest(newUrl, child.path);
+      const result = routeTest(newUrl, child.path, basename);
       setParams(result);
       return !!result;
     }));
   };
 
   const navigate = (newUrl) => {
-    window.history.pushState({}, null, basename + '/' + newUrl);
-    const fullUrl = basename + '/' + newUrl;
-    console.log('blog navigate: ' + fullUrl);
-    calcRoute(fullUrl);
+    // window.history.pushState({}, null, basename + newUrl);
+    // const fullUrl = basename + newUrl;
+    // console.log('blog navigate: ' + fullUrl);
+    // calcRoute(fullUrl);
+    window.dispatchEvent(
+      new CustomEvent("[child] navigate", {
+        detail: basename + newUrl
+      } as any)
+    );
   };
 
   const onContainerNavigate = (event) => {
@@ -65,11 +70,9 @@ const Router = ({basename, routes, children}: Params) => {
 
   useEffect(() => {
     calcRoute(url);
-    // window.addEventListener('popstate', onPopState);
-    window.addEventListener("[container] navigated", onContainerNavigate);
+    window.addEventListener("[container] navigate", onContainerNavigate);
     return () => {
-      // window.removeEventListener('popstate', onPopState)
-      window.removeEventListener("[container] navigated", onContainerNavigate)
+      window.removeEventListener("[container] navigate", onContainerNavigate)
     };
   }, []);
 

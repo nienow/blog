@@ -31,15 +31,15 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
+          "style-loader",
           "css-loader",
         ],
       },
       {
         test: /\.scss$/i,
         use: [
-          // Translates CSS into CommonJS
+          "style-loader",
           "css-loader",
-          // Compiles Sass to CSS
           "sass-loader"
         ],
       },

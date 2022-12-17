@@ -4,15 +4,21 @@ import 'blog.scss';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import yaml from 'highlight.js/lib/languages/yaml';
 import 'highlight.js/styles/github.css';
 import styled from "styled-components";
 import {useRouter} from "router/Router";
 
 hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('yaml', yaml);
+hljs.configure({
+  noHighlightRe: /blah/
+})
 
 const ArticleContainer = styled.div`
-  background-color: white;
 `;
 
 const {HOST} = process.env;
@@ -33,7 +39,7 @@ const Article = () => {
       //   // el.src = `${HOST}${el.src}`;
       //   console.log(el.src);
       // });
-      document.querySelectorAll('pre code').forEach((el) => {
+      ref.current.querySelectorAll('pre code').forEach((el) => {
         hljs.highlightElement(el as HTMLElement);
       });
     }).catch(() => {

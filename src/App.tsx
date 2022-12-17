@@ -2,8 +2,10 @@ import React from "react";
 import Router from "router/Router";
 import RouterOutlet from "router/RouterOutlet";
 import Article from "Article";
+import "./index.scss";
+import {GlobalStyle} from "GlobalStyle";
+import ArticleListVertical from "ArticleListVertical";
 import ArticleList from "ArticleList";
-
 
 interface Params {
   basename: string;
@@ -11,18 +13,21 @@ interface Params {
 }
 
 const ROUTES = [
-  {path: '/blog/article/:id', element: <Article/>},
-  {path: '/blog', element: <ArticleList/>}
+  {path: '/article/:id', element: <Article/>},
+  {path: '/', element: <ArticleList/>}
 ];
 
 const App = ({basename}: Params) => {
-
-
-  return (
-    <Router basename={basename} routes={ROUTES}>
-      <RouterOutlet/>
-    </Router>
-  );
+  if (basename === '/') {
+    return <ArticleListVertical limit={5}/>;
+  } else {
+    return (
+      <Router basename={basename} routes={ROUTES}>
+        <GlobalStyle/>
+        <RouterOutlet/>
+      </Router>
+    );
+  }
 }
 
 export default App

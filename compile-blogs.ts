@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+const {EOL} = require('os');
 const showdown = require('showdown');
 
 const rootPath = path.resolve(__dirname);
@@ -20,17 +21,21 @@ blogNames.forEach(mdFileName => {
   fs.writeFileSync(htmlFilePath, html, {encoding: 'utf8'});
 
   const startOfTitle = md.indexOf('#') + 2;
-  const endOfTitle = md.indexOf('\r\n');
+  const endOfTitle = md.indexOf(EOL);
   const startOfSummary = endOfTitle + 4;
-  const endOfSummary = md.indexOf('\r\n\r\n', startOfSummary);
+  const endOfSummary = md.indexOf(EOL + EOL, startOfSummary);
 
   blobMeta.push({
     id: blogId,
     title: md.substring(startOfTitle, endOfTitle),
-    summary: md.substring(startOfSummary, endOfSummary),
+    summary: md.substring(startOfSummary, endOfSummary).replace(EOL, ' '),
     created: mdStat.ctime,
     size: mdStat.size
   });
+});
+
+blobMeta.sort((a, b) => {
+  return b.created - a.created;
 });
 
 fs.writeFileSync('src/generated/blog-list.json', JSON.stringify(blobMeta), {encoding: 'utf8'});
