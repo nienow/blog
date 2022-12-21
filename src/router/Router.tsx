@@ -1,14 +1,15 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {routeTest} from "router/route-test";
 
-type IRoutes = {
+type IRoute = {
   path: string;
-  element: JSX.Element
-}[];
+  element: JSX.Element,
+  params?: any;
+};
 
 interface Params {
   basename: string;
-  routes: IRoutes;
+  routes: IRoute[];
   children: ReactNode;
 }
 
@@ -36,15 +37,29 @@ export const useRouter = () => {
 
 const Router = ({basename, routes, children}: Params) => {
   const [url, setUrl] = useState(location.pathname);
-  const [params, setParams] = useState({});
-  const [current, setCurrent] = useState(null);
+  // const [params, setParams] = useState({});
+  const [current, setCurrent] = useState(() => {
+    let params;
+    return {
+      ...routes.find(child => {
+        params = routeTest(location.pathname, child.path, basename);
+        return !!params;
+      }),
+      params
+    };
+  });
   const calcRoute = (newUrl) => {
     setUrl(newUrl);
-    setCurrent(routes.find(child => {
-      const result = routeTest(newUrl, child.path, basename);
-      setParams(result);
-      return !!result;
-    }));
+    let params;
+    const newRoute = routes.find(child => {
+      params = routeTest(newUrl, child.path, basename);
+      // setParams(result);
+      return !!params;
+    });
+    setCurrent({
+      ...newRoute,
+      params
+    });
   };
 
   const navigate = (newUrl) => {
@@ -69,15 +84,18 @@ const Router = ({basename, routes, children}: Params) => {
   };
 
   useEffect(() => {
-    calcRoute(url);
     window.addEventListener("[container] navigate", onContainerNavigate);
     return () => {
       window.removeEventListener("[container] navigate", onContainerNavigate)
     };
-  }, []);
+  }, [current]);
+
+  // useEffect(() => {
+  //   calcRoute(url);
+  // }, []);
 
   return (
-    <RouterContext.Provider value={{url, params, current, routes, navigate}}>{children}</RouterContext.Provider>
+    <RouterContext.Provider value={{url, current, params: current.params, routes, navigate}}>{children}</RouterContext.Provider>
   );
 }
 

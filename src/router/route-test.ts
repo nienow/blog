@@ -6,12 +6,10 @@ export const segmentize = (url: string) => {
   return stripSlashesFromFrontAndRear(url).split('/');
 };
 
-export const routeTest = (url: string, route: string, basename: string) => {
+export const routeTest = (url: string, route: string, basename: string = '/') => {
   const matches = {};
   const urlSegments = segmentize(url);
   const routeSegments = segmentize(basename + route || '');
-  console.log(routeSegments);
-  console.log(urlSegments);
   let max = Math.max(urlSegments.length, routeSegments.length);
 
   const hasWildcard = routeSegments[routeSegments.length - 1] === '*';

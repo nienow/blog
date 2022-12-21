@@ -23,8 +23,8 @@ const ArticleContainer = styled.div`
 
 const {HOST} = process.env;
 const Article = () => {
-  const {params} = useRouter();
-  const {id} = params;
+  const {current} = useRouter();
+  const {id} = current.params;
   // console.log(params);
   const ref = useRef<HTMLDivElement>();
 

@@ -6,12 +6,11 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 require('dotenv').config();
 const deps = require("./package.json").dependencies;
 const HOST = process.env.HOST;
-console.log('HOST: ' + HOST);
 
 module.exports = {
   output: {
     filename: "[name].[contenthash].js",
-    publicPath: HOST,
+    // publicPath: HOST,
     clean: true
     // publicPath: "auto"
   },
@@ -70,7 +69,7 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './BlogIndex': './src/bootstrap'
+        './bootstrap': './src/bootstrap'
       },
       shared: {
         ...deps,
@@ -86,7 +85,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
-      template: "./src/index.html"
+      template: "./public/index.html"
     }),
     new DefinePlugin({
       'process.env.HOST': JSON.stringify(HOST),

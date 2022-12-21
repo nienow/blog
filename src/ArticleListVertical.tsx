@@ -30,7 +30,7 @@ const ArticleQuick = styled.div`
 `;
 
 const ArticleSummary = ({blog}) => {
-  const url = `/blog/article/${blog.id}`;
+  const url = `/articles/${blog.id}`;
   const goTo = (e) => {
     e.preventDefault();
     navigateTo(url);
@@ -48,7 +48,7 @@ interface Params {
 }
 const ArticleListVertical = ({limit}: Params) => {
   const seeAll = () => {
-      navigateTo('/blog');
+      navigateTo('/articles');
   };
 
   const blogsToShow = limit ? blogs.slice(0, limit) : blogs;
