@@ -40,3 +40,4 @@ blobMeta.sort((a, b) => {
 
 fs.writeFileSync('src/generated/blog-list.json', JSON.stringify(blobMeta), {encoding: 'utf8'});
 
+

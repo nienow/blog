@@ -1,13 +1,13 @@
 import React, {Suspense} from "react";
 import Router from "router/Router";
 import RouterOutlet from "router/RouterOutlet";
-import {GlobalStyle} from "GlobalStyle";
 import ArticleListVertical from "ArticleListVertical";
 import ArticleList from "ArticleList";
+import Page from "Page";
 
 interface Params {
   basename: string;
-  style: string;
+  page: string;
 }
 
 // lazy so highlightjs styles aren't loaded right away
@@ -18,16 +18,19 @@ const ROUTES = [
   {path: '/', element: <ArticleList/>}
 ];
 
-const App = ({basename}: Params) => {
-  if (basename === '/') {
+const App = ({basename, page}: Params) => {
+  if (page) {
+    return <Page page={page}/>;
+  } else if (basename === '/') {
     return <ArticleListVertical limit={5}/>;
-  } else if (basename === '/blog') {
+  } else if (basename === '/articles') {
     return (
       <Router basename={basename} routes={ROUTES}>
-        <GlobalStyle/>
         <RouterOutlet/>
       </Router>
     );
+  } else {
+    return <div>Error</div>
   }
 }
 

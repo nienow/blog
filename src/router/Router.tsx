@@ -63,10 +63,6 @@ const Router = ({basename, routes, children}: Params) => {
   };
 
   const navigate = (newUrl) => {
-    // window.history.pushState({}, null, basename + newUrl);
-    // const fullUrl = basename + newUrl;
-    // console.log('blog navigate: ' + fullUrl);
-    // calcRoute(fullUrl);
     window.dispatchEvent(
       new CustomEvent("[child] navigate", {
         detail: basename + newUrl
@@ -79,7 +75,6 @@ const Router = ({basename, routes, children}: Params) => {
     if (!url.startsWith(basename)) {
       return;
     }
-    console.log('blog event: ' + url);
     calcRoute(url);
   };
 
@@ -89,10 +84,6 @@ const Router = ({basename, routes, children}: Params) => {
       window.removeEventListener("[container] navigate", onContainerNavigate)
     };
   }, [current]);
-
-  // useEffect(() => {
-  //   calcRoute(url);
-  // }, []);
 
   return (
     <RouterContext.Provider value={{url, current, params: current.params, routes, navigate}}>{children}</RouterContext.Provider>

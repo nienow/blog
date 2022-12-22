@@ -19,11 +19,15 @@ if (!window.customElements.get('randombits-blog')) {
       })
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+      console.log('attribute change: ', name, oldValue, newValue);
+    }
+
     render() {
       console.debug('mount blog');
       const basename = this.getAttribute("basename") || '/';
-      const style = this.getAttribute("style") || 'full';
-      this.reactRoot.render(<App basename={basename} style={style}/>);
+      const page = this.getAttribute("page");
+      this.reactRoot.render(<App basename={basename} page={page}/>);
     }
   }
 

@@ -1,5 +1,3 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
@@ -8,15 +6,10 @@ const deps = require("./package.json").dependencies;
 const HOST = process.env.HOST;
 
 module.exports = {
+  mode: 'production',
   output: {
     filename: "[name].[contenthash].js",
-    // publicPath: HOST,
     clean: true
-    // publicPath: "auto"
-  },
-  optimization: {
-    minimize: false,
-    // runtimeChunk: 'single'
   },
   module: {
     rules: [
@@ -55,14 +48,6 @@ module.exports = {
     ],
     extensions: ['.tsx', '.ts', '.js']
   },
-  devServer: {
-    port: 8081,
-    hot: true,
-    historyApiFallback: true,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  },
   plugins: [
     new ModuleFederationPlugin({
       name: "blog",
@@ -82,10 +67,6 @@ module.exports = {
           requiredVersion: deps["react-dom"]
         }
       },
-    }),
-    new HtmlWebpackPlugin({
-      title: 'Hot Module Replacement',
-      template: "./public/index.html"
     }),
     new DefinePlugin({
       'process.env.HOST': JSON.stringify(HOST),
