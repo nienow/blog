@@ -1,6 +1,13 @@
 <html>
 <body>
-<randombits-blog></randombits-blog>
+Use /article/[id] or /page/[id] for testing
+<randombits-blog id="el"></randombits-blog>
+<script type="text/javascript">
+  const paths = location.pathname.split('/');
+  const el = document.getElementById('el');
+  el.setAttribute('type', paths[1]);
+  el.setAttribute('name', paths[2]);
+</script>
 </body>
 </html>
 

@@ -8,7 +8,6 @@ import scss from 'highlight.js/lib/languages/scss';
 import yaml from 'highlight.js/lib/languages/yaml';
 import 'highlight.js/styles/github.css';
 import styled from "styled-components";
-import {useRouter} from "router/Router";
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('scss', scss);
@@ -22,9 +21,9 @@ const ArticleContainer = styled.div`
 `;
 
 const {HOST} = process.env;
-const Article = () => {
-  const {current} = useRouter();
-  const {id} = current.params;
+const Article = ({id}) => {
+  // const {current} = useRouter();
+  // const {id} = current.params;
   // console.log(params);
   const ref = useRef<HTMLDivElement>();
 

@@ -34,7 +34,8 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './bootstrap': './src/bootstrap'
+        './bootstrap': './src/bootstrap',
+        './blog-list': './src/generated/blog-list.json'
       },
       shared: {
         ...deps,

@@ -18,11 +18,11 @@ const PageContainer = styled.div`
 `;
 
 const {HOST} = process.env;
-const Page = ({page}) => {
+const Page = ({id}) => {
   const ref = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    fetch(`${HOST}/pages/${page}.html`).then(res => res.text()).then((html) => {
+    fetch(`${HOST}/pages/${id}.html`).then(res => res.text()).then((html) => {
       html = html.replace(/src="\/(.+?)"/g, `src="${HOST}$1"`);
       if (ref.current) {
         ref.current.innerHTML = html;
@@ -31,7 +31,7 @@ const Page = ({page}) => {
         hljs.highlightElement(el as HTMLElement);
       });
     }).catch(() => {
-      console.error('Not found: ' + page);
+      console.error('Not found: ' + id);
     });
   }, []);
 
