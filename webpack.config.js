@@ -57,15 +57,7 @@ module.exports = {
         './bootstrap': './src/bootstrap'
       },
       shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: deps["react-dom"]
-        }
+        ...deps
       },
     }),
     new DefinePlugin({

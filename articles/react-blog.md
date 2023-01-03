@@ -5,7 +5,7 @@ assumed I would need a server side part to the application, with a database or t
 research, there is a much simpler way.
 
 1. Use markdown to write the blog posts and push to the GIT repo
-2. At buildtime, convert the markdown to html, and also gather the metadata
+2. At build time, convert the markdown to html, and also gather the metadata
 3. Use CI to build application and deploy live
 
 ## Using markdown to write blog posts
@@ -16,7 +16,7 @@ Code, etc.
 ```
 # This is a blog title
 
-This is a summary...
+This is a summary... 
 ```
 
 ## Converting to HTML
@@ -101,7 +101,7 @@ const Article = () => {
       ref.current.innerHTML = html;
       
       // syntax highlight code blocks
-      document.querySelectorAll('pre code').forEach((el) => {
+      ref.current.querySelectorAll('pre code').forEach((el) => {
         hljs.highlightElement(el);
       });
     });

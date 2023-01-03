@@ -7,13 +7,13 @@ const showdown = require('showdown');
 const rootPath = path.resolve(__dirname);
 const converter = new showdown.Converter();
 
-const blogNames: string[] = fs.readdirSync('./blogs');
+const blogNames: string[] = fs.readdirSync('./articles');
 const blobMeta = [];
 blogNames.forEach(mdFileName => {
-  const mdFilePath = path.join(rootPath, 'blogs', mdFileName);
+  const mdFilePath = path.join(rootPath, 'articles', mdFileName);
   const blogId = mdFileName.substring(0, mdFileName.length - 3);
   const htmlFileName = blogId + '.html';
-  const htmlFilePath = path.join(rootPath, 'public/blogs', htmlFileName);
+  const htmlFilePath = path.join(rootPath, 'public/articles', htmlFileName);
 
   const mdStat = fs.statSync(mdFilePath);
   const md = fs.readFileSync(mdFilePath, {encoding: 'utf8'});
@@ -38,6 +38,6 @@ blobMeta.sort((a, b) => {
   return b.created - a.created;
 });
 
-fs.writeFileSync('src/generated/blog-list.json', JSON.stringify(blobMeta), {encoding: 'utf8'});
+fs.writeFileSync('src/generated/articles.json', JSON.stringify(blobMeta), {encoding: 'utf8'});
 
 

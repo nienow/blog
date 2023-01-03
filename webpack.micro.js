@@ -18,7 +18,7 @@ module.exports = {
   },
   devServer: {
     port: 8081,
-    hot: true,
+    hot: false,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -35,18 +35,10 @@ module.exports = {
       remotes: {},
       exposes: {
         './bootstrap': './src/bootstrap',
-        './blog-list': './src/generated/blog-list.json'
+        './articles': './src/generated/articles.json'
       },
       shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: deps["react-dom"]
-        }
+        ...deps
       },
     }),
     new DefinePlugin({
