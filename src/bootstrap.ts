@@ -13,7 +13,7 @@ hljs.registerLanguage('yaml', yaml);
 
 const {HOST} = process.env;
 
-if (!window.customElements.get('randombits-blog')) {
+if (!window.customElements.get('randombits-markdown')) {
   class ExternalApp extends HTMLElement {
 
     connectedCallback() {
@@ -59,5 +59,5 @@ if (!window.customElements.get('randombits-blog')) {
     }
   }
 
-  window.customElements.define('randombits-blog', ExternalApp);
+  window.customElements.define('randombits-markdown', ExternalApp);
 }

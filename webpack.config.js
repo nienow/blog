@@ -50,7 +50,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "blog",
+      name: "markdown",
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {

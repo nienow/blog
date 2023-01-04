@@ -1,5 +1,4 @@
 {
-  //  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "allowJs": true,
     "alwaysStrict": true,
@@ -11,7 +10,7 @@
     "jsx": "preserve",
     "lib": [
       "dom",
-      "es6"
+      "ES2021"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -22,7 +21,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext",
+    "target": "ES2021",
     "incremental": true,
     "baseUrl": "src"
   },

@@ -1,12 +1,20 @@
 <html>
 <body>
-Use /article/[id] or /page/[id] for testing
-<randombits-blog id="el"></randombits-blog>
+<div style="border-bottom: 1px solid black">Use /article/[id] or /page/[id] for testing</div>
+<div id="el"></div>
 <script type="text/javascript">
   const paths = location.pathname.split('/');
-  const el = document.getElementById('el');
-  el.setAttribute('type', paths[1]);
-  el.setAttribute('name', paths[2]);
+  const el = document.createElement('randombits-blog');
+  if (paths.length < 3) {
+    el.setAttribute('page', 'test');
+  } else {
+    if (paths[1] === 'article') {
+      el.setAttribute('article', paths[2]);
+    } else if (paths[1] === 'page') {
+      el.setAttribute('page', paths[2]);
+    }
+  }
+  document.getElementById('el').appendChild(el);
 </script>
 </body>
 </html>
