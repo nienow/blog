@@ -1,4 +1,15 @@
 import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import yaml from 'highlight.js/lib/languages/yaml';
+import 'highlight.js/styles/github.css';
+import './blog.scss';
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('scss', scss);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('yaml', yaml);
 
 const {HOST} = process.env;
 
@@ -38,6 +49,7 @@ if (!window.customElements.get('randombits-blog')) {
           html = html.replace(/src="\/(.+?)"/g, `src="${HOST}$1"`);
           this.innerHTML = html;
           this.querySelectorAll('pre code').forEach((el) => {
+            console.log('highlight');
             hljs.highlightElement(el as HTMLElement);
           });
         }).catch(() => {
