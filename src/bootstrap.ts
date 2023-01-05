@@ -35,7 +35,6 @@ if (!window.customElements.get('randombits-markdown')) {
     }
 
     render() {
-      console.debug('mount blog');
       const pageId = this.getAttribute('page');
       const articleId = this.getAttribute('article');
       let url;
@@ -49,7 +48,6 @@ if (!window.customElements.get('randombits-markdown')) {
           html = html.replace(/src="\/(.+?)"/g, `src="${HOST}$1"`);
           this.innerHTML = html;
           this.querySelectorAll('pre code').forEach((el) => {
-            console.log('highlight');
             hljs.highlightElement(el as HTMLElement);
           });
         }).catch(() => {

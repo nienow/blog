@@ -3,7 +3,7 @@ const DefinePlugin = require('webpack/lib/DefinePlugin');
 
 const prodConfig = require('./webpack.config');
 
-const HOST = 'http://localhost:8081/';
+const HOST = 'http://localhost:3001/';
 module.exports = {
   ...prodConfig,
   mode: 'development',
@@ -15,7 +15,7 @@ module.exports = {
     minimize: false
   },
   devServer: {
-    port: 8081,
+    port: 3001,
     hot: true,
     historyApiFallback: true,
     headers: {

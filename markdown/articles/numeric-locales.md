@@ -1,6 +1,6 @@
 # Allowing users to input numbers/prices in a specified locale
 
-Using `<input type="number"/>` only works correctly in the brower's locale. This is fine for many applications, since the user most likely only wants to work in their one locale.
+Using `<input type="number"/>` only works correctly in the browser's locale. This is fine for many applications, since the user most likely only wants to work in their one locale.
 
 However, I've worked on several CRM applications that allowed the user to switch the locale they wanted to work in. After having to implement this ability several times in the frontend, I've come up with an easy and elegant solution.
 

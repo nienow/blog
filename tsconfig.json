@@ -2,31 +2,20 @@
   "compilerOptions": {
     "allowJs": true,
     "alwaysStrict": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
+    "baseUrl": "src",
+    "incremental": true,
     "lib": [
       "dom",
       "ES2021"
     ],
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
-    "noEmit": false,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strict": true,
     "target": "ES2021",
-    "incremental": true,
-    "baseUrl": "src"
   },
-  "exclude": [],
   "include": [
     "src"
-  ]
+  ],
+  "exclude": [],
 }

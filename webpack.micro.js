@@ -4,7 +4,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const deps = require("./package.json").dependencies;
 
-const HOST = 'http://localhost:8081/';
+const HOST = 'http://localhost:3001/';
 
 module.exports = {
   ...prodConfig,
@@ -17,8 +17,8 @@ module.exports = {
     minimize: false
   },
   devServer: {
-    port: 8081,
-    hot: false,
+    port: 3001,
+    hot: true,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
