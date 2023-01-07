@@ -1,5 +1,4 @@
 randombits-markdown {
-  //font-family: "Candara Light";
 
   h1 {
     text-align: center;
@@ -17,5 +16,14 @@ randombits-markdown {
 
   img {
     width: 800px;
+  }
+
+  table {
+    border-collapse: collapse;
+
+    td, th {
+      border: 1px solid #ccc;
+      padding: 3px 10px;
+    }
   }
 }

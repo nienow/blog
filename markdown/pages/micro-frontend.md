@@ -15,12 +15,3 @@ With myself being the only developer on this project, it normally would not make
 1. I wanted to better understand the architecture, and hopefully improve it.
 2. I wanted to be able to experiment with different frameworks / libraries (part of the site in react, part in svelte, etc).
 3. I wanted separate repos for the different parts of the site, in order to use them for examples in my articles.
-
-## List of apps
-
-### Main Apps
-1. Container - Contains the header, footer, and router
-2. Article - handles static pages that are written using markdown (blog articles and static pages like this page). %RANDOMBITS_REMOTE_BLOG%
-
-### Tools
-1. Snowrunner save editor

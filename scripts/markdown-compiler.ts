@@ -4,12 +4,12 @@ import * as path from 'path';
 const {EOL} = require('os');
 const showdown = require('showdown');
 
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({tables: true});
 
 export const compileMarkdown = (dir: string) => {
   const mdDir = path.resolve('markdown', dir);
   const htmlDir = path.resolve('public', dir);
-  const meta = [];
+  const meta: any[] = [];
   const metaFile = path.resolve('src', 'generated', `${dir}.json`);
   const mdList: string[] = fs.readdirSync(mdDir);
 

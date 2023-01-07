@@ -1,7 +1,6 @@
-# This blog example uses all features
+# This example uses all features
 
-It will show off code blocks, ordered and unordered lists, links, and different headers.
-This is just some text to make the summary longer.
+This is some plain text.
 
 ## Header 2
 
@@ -31,5 +30,13 @@ Here is a link:
 [Bitcoin Whitepaper](https://bitcoinwhitepaper.co/)
 
 Here is some unescaped html:
-<div style="border: 1px dashed black; width: 100px; height: 100px">
+<div style="border: 1px dashed black; padding: 25px; width: 200px;">
+I'm a div with a border
 </div>
+
+Here is a table:
+
+| Left Aligned  | Centered | Right Aligned |
+|---------------|:--------:|--------------:|
+| **bold**      |   one    |         $1600 |
+| *italic*      |   two    |           $12 |
