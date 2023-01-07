@@ -1,4 +1,4 @@
-name: Build & Test
+name: Build
 
 on:
   push:
@@ -15,6 +15,6 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run compile
-      - run: npm run build
+      - run: yarn install --immutable
+      - run: yarn run compile
+      - run: yarn run deploy
