@@ -1,0 +1,140 @@
+<h1 id="creatingablogwithreactandmarkdown">Creating a blog with react and markdown</h1>
+<p>Were so used to separating data from code. When I was thinking about the architecture for a simple blog, I immediately
+assumed I would need a server side part to the application, with a database or the likes. But after doing a little
+research, there is a much simpler way.</p>
+<ol>
+<li>Use markdown to write the blog posts and push to the GIT repo</li>
+<li>At build time, convert the markdown to html, and also gather the metadata</li>
+<li>Use CI to build application and deploy live</li>
+</ol>
+<h2 id="usingmarkdowntowriteblogposts">Using markdown to write blog posts</h2>
+<p>Markdown is fast and simple. It includes everything you need in a developer blog: Code blocks, Images, Links, Embedded
+Code, etc.</p>
+<pre><code># This is a blog title
+
+This is a summary... 
+</code></pre>
+<h2 id="convertingtohtml">Converting to HTML</h2>
+<p>I'm using <a href="https://showdownjs.com/">showdown</a> for the markdown to html conversion. There were several libraries to
+choose from, and I just chose the one that looked the lightest and fastest.</p>
+<p>I created a script that would run at build time to convert the blogs and also gather the metadata for the article list
+page. I'll let the code speak for itself:</p>
+<pre><code class="javascript language-javascript">import * as fs from 'fs';
+import * as path from 'path';
+const {EOL} = require('os');
+const rootPath = path.resolve(__dirname);
+
+const showdown = require('showdown');
+const converter = new showdown.Converter();
+
+const blogNames: string[] = fs.readdirSync('./blogs');
+const blogList = [];
+blogNames.forEach(mdFileName =&gt; {
+  const blogId = mdFileName.substring(0, mdFileName.length - 3);
+
+  // read markdown file and stats
+  const mdFilePath = path.join(rootPath, 'blogs', mdFileName);
+  const mdStat = fs.statSync(mdFilePath);
+  const mdContents = fs.readFileSync(mdFilePath, {encoding: 'utf8'});
+  const mdTitle = mdContents.substring(mdContents.indexOf('#') + 2, mdContents.indexOf(EOL));
+
+  // write HTML file
+  const htmlFileName = blogId + '.html';
+  const htmlFilePath = path.join(rootPath, 'public/blogs', htmlFileName);
+  fs.writeFileSync(htmlFilePath, converter.makeHtml(mdContents), {encoding: 'utf8'});
+
+  blogList.push({
+    id: blogId,
+    title: mdTitle,
+    created: mdStat.ctime,
+    size: mdStat.size
+  });
+});
+
+fs.writeFileSync('src/generated/blog-list.json', JSON.stringify(blogList), {encoding: 'utf8'});
+</code></pre>
+<h2 id="articlelistpage">Article List Page</h2>
+<p>This page simply reads the metadata that we gathered about the blogs, and generates a list of the articles.</p>
+<pre><code class="javascript language-javascript">import blogs from 'generated/blog-list.json';
+
+const ArticleList = () =&gt; {
+  return (
+    &lt;div&gt;
+      {
+        blogs.map(blog =&gt; &lt;a href={'article/' + blog.id}&gt;{blog.title}&lt;/a&gt;)
+      }
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="articlecontentpage">Article Content Page</h2>
+<p>Since the HTML of the article is static and doesn't contain scripts, we can simply fetch the html and set it into the
+innerHTML property. </p>
+<p>Then I'm using highlight.js to syntax highlight the code blocks. The highlighting is completely optional but
+looks good.</p>
+<pre><code class="javascript language-javascript">const Article = () =&gt; {
+  const {id} = useParams();
+  const ref = useRef&lt;HTMLDivElement&gt;();
+
+  useEffect(() =&gt; {
+    fetch('/blogs/' + id + '.html').then(res =&gt; res.text()).then((html) =&gt; {
+      ref.current.innerHTML = html;
+
+      // syntax highlight code blocks
+      ref.current.querySelectorAll('pre code').forEach((el) =&gt; {
+        hljs.highlightElement(el);
+      });
+    });
+  }, []);
+
+  return (
+    &lt;div className="article" ref={ref}&gt;&lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="styling">Styling</h2>
+<p>For styling, you can create a single SASS file that is scoped to the <strong>.article</strong> classname. 
+I normally use styled-components for styling, but of course that won't work in this scenario, since the article HTML is plain HTML.</p>
+<pre><code class="scss language-scss">.article {
+  font-family: "Candara Light";
+
+  h1 {
+    font-size: 32px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  code {
+    background-color: #ddd;
+    border-radius: 5px;
+    padding: 10px;
+  }
+}
+</code></pre>
+<h2 id="cibuild">CI Build</h2>
+<p>Use Github or another CI workflow to generate the blogs first, and then build:</p>
+<pre><code class="yaml language-yaml">name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn install --immutable
+      - run: yarn run blogs
+      - run: yarn run build
+</code></pre>
+<h2 id="whyreact">Why React?</h2>
+<p>There is nothing dynamic about this webapp. You could use any framework, or no framework at all. I chose React because
+it is the simplest to get started.</p>

@@ -1,0 +1,73 @@
+<h1 id="allowinguserstoinputnumberspricesinaspecifiedlocale">Allowing users to input numbers/prices in a specified locale</h1>
+<p>Using <code>&lt;input type="number"/&gt;</code> only works correctly in the browser's locale. This is fine for many applications, since the user most likely only wants to work in their one locale.</p>
+<p>However, I've worked on several CRM applications that allowed the user to switch the locale they wanted to work in. After having to implement this ability several times in the frontend, I've come up with an easy and elegant solution.</p>
+<h2 id="basicrequirements">Basic Requirements</h2>
+<p>To allow a user to input numbers in a different format, we need the following:</p>
+<ol>
+<li>An input of type <em>text</em>, since the number can contain symbols that are not allowed in type <em>number</em></li>
+<li>A method to parse the user input to a javascript number</li>
+<li>Unless the input will always start out blank, a method to format the initial server side value to the locale formatted value</li>
+</ol>
+<h2 id="formattinganumber">Formatting a number</h2>
+<p>Its easy to format a number in any locale. You can use</p>
+<pre><code class="javascript language-javascript">function formatNumber(value) {
+    return Intl.NumberFormat('de-DE').format(value);
+}
+
+formatNumber(1234.56); // 1.234,56
+</code></pre>
+<h2 id="parsinganumber">Parsing a number</h2>
+<p>It's not so easy to parse a number in any locale, since there isn't an API for that. We need to figure out the <strong>group</strong> symbol and the <strong>decimal</strong> symbol of the locale. For example, here are the symbols for the following locales:</p>
+<p>| Locale | Example | Group Symbol | Decimal Symbol | 
+|-|-|-|-|
+| en-US | 1,234.56 | , (comma) | . (period) |
+| de-DE | 1.234,56 | . (period) | , (comma) |
+| fr-CA | 1 234,56 | (space) | , (comma) |</p>
+<p>In order to determine these symbols, we first format a number from that locale. 
+Then we can parse the output to determine the symbols:</p>
+<pre><code class="javascript language-javascript">const parts = new Intl.NumberFormat('de-DE', {style: 'decimal'}).formatToParts(1111.11);
+const groupPart = parts.find((d) =&gt; d.type === 'group')?.value;
+const decimalPart = parts.find((d) =&gt; d.type === 'decimal').value;
+</code></pre>
+<p>Now we know the symbols for the locale. So now lets parse something:</p>
+<pre><code class="javascript language-javascript">function parseInput(value) {
+    // check if negative
+    const isNegative = (value.indexOf('-') &gt;= 0);
+
+    // remove group symbols
+    value = value.replaceAll(groupPart, '');
+
+    // remove spaces, this helps with some locales that have spaces between a minus symbol and the number, or different types of space characters
+    value = value.replace(/\s/g, '');
+
+    // remove minus symbols. some locales have minus symbols after the number
+    value = value.replace(/^-/, '').replace(/-$/, '');
+
+    // replace decimal symbol with "."
+    value = value.replace(decimalPart, '.');
+
+    if (isNegative) {
+        value = '-' + value;
+    }
+
+    // convert to number type
+    value = Number(value);
+}
+
+parseInput('1.234,56');
+</code></pre>
+<h2 id="creatinganumberinputinreact">Creating a number input in react</h2>
+<pre><code class="javascript language-javascript">const valueFromServer = 1234.56;
+export default function NumberInput() {
+  const [value, setValue] = useState(valueFromServer);
+  const handleChange = (e) =&gt; {
+    setValue(parseInput(e.target.value));
+  };
+  return (
+    &lt;div&gt;
+      &lt;input type="text" value={formatNumber(value)} onChange={handleChange}/&gt;
+      &lt;div&gt;Number value: {value}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
