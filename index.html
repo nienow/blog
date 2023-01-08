@@ -1,21 +1,23 @@
-<html>
-<body>
-<div style="border-bottom: 1px solid black">Use /article/[id] or /page/[id] for testing</div>
-<div id="el"></div>
-<script type="text/javascript">
-  const paths = location.pathname.split('/');
-  const el = document.createElement('randombits-markdown');
-  if (paths.length < 3) {
-    el.setAttribute('page', 'test');
-  } else {
-    if (paths[1] === 'article') {
-      el.setAttribute('article', paths[2]);
-    } else if (paths[1] === 'page') {
-      el.setAttribute('page', paths[2]);
+<html><head><script defer="defer" src="main.8305dcb36fe07645de81.js"></script><script defer="defer" src="remoteEntry.js"></script></head><body><div style="border-bottom: 1px solid black">Use /article/[id] or /page/[id] for testing</div><randombits-markdown id="el" page="test"/><script>const el = document.getElementById('el');
+
+  function setContent() {
+    const paths = location.hash.split('/');
+    console.log('setting content', paths);
+    if (paths.length < 3) {
+      el.removeAttribute('article');
+      el.setAttribute('page', 'test');
+    } else {
+      if (paths[1] === 'article') {
+        el.removeAttribute('page');
+        el.setAttribute('article', paths[2]);
+      } else if (paths[1] === 'page') {
+        el.removeAttribute('article');
+        el.setAttribute('page', paths[2]);
+      }
     }
   }
-  document.getElementById('el').appendChild(el);
-</script>
-</body>
-</html>
 
+  window.addEventListener('hashchange', () => {
+    setContent();
+  });
+  setContent();</script></body></html>
